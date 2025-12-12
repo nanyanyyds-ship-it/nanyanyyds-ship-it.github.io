@@ -2,10 +2,11 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>5:20 特别推送</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5:20 专属早安妍妍</title>
     <style>
         body {
-            background-color: #fce4ec; /* 粉色背景 */
+            background-color: #fce4ec;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -22,8 +23,8 @@
             max-width: 300px;
             width: 90%;
         }
-        h1 { color: #ec407a; font-size: 24px; }
-        p { color: #555; }
+        h1 { color: #ec407a; font-size: 24px; margin-bottom: 15px; }
+        p { color: #555; line-height: 1.6; margin: 8px 0; }
         .btn {
             background: #ec407a;
             color: white;
@@ -33,32 +34,84 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 20px;
+            transition: background 0.3s;
         }
         .btn:hover { background: #d81b60; }
+        audio { display: none; }
+        .sound-tip {
+            color: #ec407a;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        /* 5:20 高亮样式 */
+        .highlight-time {
+            color: #ec407a;
+            font-weight: bold;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
+    <audio id="kissAudio" src="kiss.mp3" preload="metadata">你的浏览器不支持音频播放</audio>
 
-<div class="card" id="card">
-    <h1>❤️ 早安妍妍！</h1>
-    <p>现在是 05:20 分</p>
-    <p>你的专属男友正在向你发射爱心光波...</p>
-    <button class="btn" onclick="receiveKiss()">接收早安吻</button>
-</div>
+    <div class="card" id="card">
+        <h1>❤️ 早安妍妍！</h1>
+        <p>现在是 <span id="currentTime" class="highlight-time"></span></p>
+        <p>你的专属男友正在向你发射爱心光波...</p>
+        <button class="btn" onclick="receiveKiss()">接收早安吻</button>
+    </div>
 
-<script>
-    function receiveKiss() {
-        document.getElementById('card').innerHTML = `
-            <h1>💖 接收成功！</h1>
-            <p>早安吻 x 1</p>
-            <p>有效期：永远</p>
-            <p>发送者：爱你的 [赫赫]</p>
-        `;
-        // 这里可以加音效
-        // var audio = new Audio('morning.mp3');
-        // audio.play();
-    }
-</script>
+    <script>
+        const kissAudio = document.getElementById('kissAudio');
+        let isPlayed = false;
 
+        // 实时更新北京时间
+        function updateTime() {
+            const now = new Date();
+            // 补零：确保分钟/秒为两位数（如 5:02 而非 5:2）
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const timeStr = `${hours}:${minutes}:${seconds}`;
+            
+            // 高亮 5:20 相关时间
+            const timeElement = document.getElementById('currentTime');
+            if (hours === '05' && minutes === '20') {
+                timeElement.textContent = timeStr;
+                timeElement.classList.add('highlight-time');
+            } else {
+                timeElement.textContent = timeStr;
+                timeElement.classList.remove('highlight-time'); // 非 5:20 取消高亮
+            }
+        }
+
+        // 初始化并每秒更新一次时间
+        updateTime();
+        setInterval(updateTime, 1000);
+
+        function receiveKiss() {
+            document.getElementById('card').innerHTML = `
+                <h1>💖 接收成功！</h1>
+                <p>早安吻 x 1</p>
+                <p>有效期：永远</p>
+                <p>发送者：爱你的 赫赫</p>
+            `;
+
+            if (!isPlayed) {
+                kissAudio.play().catch(err => {
+                    document.getElementById('card').insertAdjacentHTML('beforeend', `<p class="sound-tip">点击页面任意位置开启声音~</p>`);
+                    document.body.onclick = () => {
+                        kissAudio.play();
+                        isPlayed = true;
+                    };
+                });
+                isPlayed = true;
+            }
+        }
+
+        window.onload = () => {
+            kissAudio.load();
+        };
+    </script>
 </body>
 </html>
