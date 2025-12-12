@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>5:20 特别推送</title>
+    <style>
+        body {
+            background-color: #fce4ec; /* 粉色背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+        }
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 300px;
+            width: 90%;
+        }
+        h1 { color: #ec407a; font-size: 24px; }
+        p { color: #555; }
+        .btn {
+            background: #ec407a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        .btn:hover { background: #d81b60; }
+    </style>
+</head>
+<body>
+
+<div class="card" id="card">
+    <h1>❤️ 早安妍妍！</h1>
+    <p>现在是 05:20 分</p>
+    <p>你的专属男友正在向你发射爱心光波...</p>
+    <button class="btn" onclick="receiveKiss()">接收早安吻</button>
+</div>
+
+<script>
+    function receiveKiss() {
+        document.getElementById('card').innerHTML = `
+            <h1>💖 接收成功！</h1>
+            <p>早安吻 x 1</p>
+            <p>有效期：永远</p>
+            <p>发送者：爱你的 [赫赫]</p>
+        `;
+        // 这里可以加音效
+        // var audio = new Audio('morning.mp3');
+        // audio.play();
+    }
+</script>
+
+</body>
+</html>
