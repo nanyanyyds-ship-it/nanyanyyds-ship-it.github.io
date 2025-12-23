@@ -1,117 +1,398 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>5:20 专属早安妍妍</title>
+    <title>致妍妍 | 50天纪念情书</title>
     <style>
-        body {
-            background-color: #fce4ec;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        * {
             margin: 0;
-            font-family: 'Arial', sans-serif;
+            padding: 0;
+            box-sizing: border-box;
         }
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        body {
+            background: linear-gradient(135deg, #f5f0ff 0%, #ffe8f3 100%);
+            font-family: "Noto Serif SC", "Microsoft YaHei", serif;
+            padding: 15px;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            background-attachment: fixed;
+        }
+        /* 动态背景（花瓣+光斑） */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .petal {
+            position: absolute;
+            opacity: 0.6;
+            animation: floatPetal 12s ease-in-out infinite;
+        }
+        .light-spot {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,210,230,0.4) 0%, transparent 70%);
+            filter: blur(30px);
+            animation: floatLight 15s linear infinite alternate;
+        }
+        @keyframes floatPetal {
+            0% { transform: translateY(100vh) rotate(0deg) scale(0.8); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-20vh) rotate(720deg) scale(1.2); opacity: 0; }
+        }
+        @keyframes floatLight {
+            0% { transform: translate(20%, 30%) scale(1); }
+            100% { transform: translate(80%, 70%) scale(1.3); }
+        }
+        /* 封面样式（高级卡片） */
+        .cover {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 24px;
+            padding: 60px 30px;
             text-align: center;
-            max-width: 300px;
-            width: 90%;
+            box-shadow: 0 12px 48px rgba(150, 80, 120, 0.15);
+            position: relative;
+            z-index: 1;
+            margin: 80px auto;
+            max-width: 550px;
+            border: 1px solid rgba(255, 180, 220, 0.2);
+            overflow: hidden;
         }
-        h1 { color: #ec407a; font-size: 24px; margin-bottom: 15px; }
-        p { color: #555; line-height: 1.6; margin: 8px 0; }
-        .btn {
-            background: #ec407a;
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, #ff66b2, #c287ff, #87ceff);
+        }
+        .cover h1 {
+            color: #333;
+            font-size: 36px;
+            margin-bottom: 24px;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+        .cover .subtitle {
+            color: #666;
+            font-size: 20px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        .cover .btn {
+            background: linear-gradient(45deg, #ff66b2, #ff85c0);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-        .btn:hover { background: #d81b60; }
-        audio { display: none; }
-        .sound-tip {
-            color: #ec407a;
-            font-size: 14px;
-            margin-top: 10px;
-        }
-        /* 5:20 高亮样式 */
-        .highlight-time {
-            color: #ec407a;
-            font-weight: bold;
+            padding: 14px 36px;
+            border-radius: 36px;
             font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(255, 102, 178, 0.25);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+        }
+        .cover .btn:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 28px rgba(255, 102, 178, 0.35);
+            background: linear-gradient(45deg, #ff52a2, #ff73b9);
+        }
+        .cover .date {
+            color: #999;
+            font-size: 16px;
+            margin-top: 36px;
+            letter-spacing: 1px;
+        }
+        /* 情书内容样式（质感纸张） */
+        .letter {
+            display: none;
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 24px;
+            padding: 45px 30px;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+            line-height: 2.2;
+            color: #3a3a3a;
+            font-size: 18px;
+            height: 88vh;
+            overflow-y: auto;
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+            max-width: 550px;
+            border: 1px solid rgba(255, 220, 235, 0.3);
+            background-image: 
+                linear-gradient(rgba(255, 245, 250, 0.8) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 245, 250, 0.8) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .letter p {
+            margin-bottom: 30px;
+            text-indent: 2em;
+            letter-spacing: 0.5px;
+        }
+        .letter .highlight {
+            color: #ff52a2;
+            font-weight: 600;
+            font-size: 19px;
+            text-shadow: 0 1px 3px rgba(255, 82, 162, 0.1);
+        }
+        .letter .poem {
+            text-align: center;
+            color: #ff52a2;
+            font-size: 22px;
+            margin: 50px 0;
+            line-height: 2.8;
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+        .letter .signature {
+            margin-top: 60px;
+            text-align: right;
+            color: #666;
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        /* 分页按钮样式（高级感） */
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255, 220, 235, 0.5);
+        }
+        .page-btn {
+            background: linear-gradient(45deg, #ff66b2, #ff85c0);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 30px;
+            font-size: 17px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(255, 102, 178, 0.2);
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .page-btn:disabled {
+            background: #f5e6ec;
+            color: #ccc;
+            box-shadow: none;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .page-btn:hover:not(:disabled) {
+            background: linear-gradient(45deg, #ff52a2, #ff73b9);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 102, 178, 0.3);
+        }
+        /* 滚动条样式（美化） */
+        .letter::-webkit-scrollbar {
+            width: 8px;
+        }
+        .letter::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ffccd8, #ff66b2);
+            border-radius: 4px;
+        }
+        .letter::-webkit-scrollbar-track {
+            background: #faf0f5;
+            border-radius: 4px;
+        }
+        /* 适配小屏手机 */
+        @media (max-width: 375px) {
+            .cover h1 {
+                font-size: 30px;
+            }
+            .cover .subtitle {
+                font-size: 18px;
+            }
+            .letter {
+                font-size: 17px;
+                padding: 35px 20px;
+                height: 85vh;
+                line-height: 2.1;
+            }
+            .letter .poem {
+                font-size: 20px;
+                margin: 40px 0;
+            }
+            .page-btn {
+                padding: 10px 22px;
+                font-size: 16px;
+            }
         }
     </style>
 </head>
 <body>
-    <audio id="kissAudio" src="kiss.mp3" preload="metadata">你的浏览器不支持音频播放</audio>
+    <!-- 动态背景容器 -->
+    <div class="bg-container" id="bgContainer"></div>
 
-    <div class="card" id="card">
-        <h1>❤️ 早安妍妍！</h1>
-        <p>现在是 <span id="currentTime" class="highlight-time"></span></p>
-        <p>你的专属男友正在向你发射爱心光波...</p>
-        <button class="btn" onclick="receiveKiss()">接收早安吻</button>
+    <!-- 封面页 -->
+    <div class="cover" id="cover">
+        <h1>致我最爱的妍妍</h1>
+        <p class="subtitle">跨越虚拟与现实的心动<br>纪念我们的第50天</p>
+        <button class="btn" id="openBtn">解锁专属情书 💌</button>
+        <div class="date">2026.1.1 跨年快乐</div>
+    </div>
+
+    <!-- 情书内容（分页） -->
+    <div class="letter" id="page1">
+        <p>今天是2026年1月1日，也是我们恋爱50天的日子。本来想用纸笔写这份情书的，但我觉得那样太传统没有新意（其实是太久没拿笔有点不会写字了），于是我做了这个网站给你。</p>
+        <p>这是我第一次为一个女生费这么大的心思，以前我认为网恋是不会有结果的，所以谈的大部分都是没有了解过我的过往、只是为了有个人陪伴的感情。但是你给我的感觉不一样，这是我第一次对一个人这么动心，我好想和你有个未来。</p>
+        <p>我喜欢你对我撒娇，喜欢你的无理取闹，你真的好可爱。你让我第一次体会到了被哄是什么感觉，好喜欢被你哄着。从小到大都没有人对我这么好过，和你在一起之后我才发现我真的好缺爱，我真的好喜欢你妍妍。</p>
+        <div class="page-nav">
+            <button class="page-btn" disabled>上一页</button>
+            <button class="page-btn" onclick="showPage(2)">下一页 <span>💌</span></button>
+        </div>
+    </div>
+
+    <div class="letter" id="page2">
+        <p>我不想让你受一点委屈，你每次哭我都很难受，你生气的时候我真的很着急，我发现已经离不开你了。</p>
+        <p>我做过最后悔的一件事就是那次向你提分手，我不知道当时为什么要做出这个决定，那天我难过了好久好久。后来发现你找了新的男朋友，我的心都碎了，我才发现我真的好在乎你，我不想让别人抢走你。</p>
+        <p>说起那次，我真的要好好感谢王智成，如果不是他，我们可能已经错过了。还记得我们是在王者荣耀认识的吗？其实我见你的第一刻就对你有好感了，所以那天才会毫不犹豫的选择了你，而不是那个瑶妹。听到你跟我说当时也等了我20分钟，我真的很感动，原来我们的相遇从不是偶遇，而是从一开始就是双向奔赴。</p>
+        <div class="page-nav">
+            <button class="page-btn" onclick="showPage(1)"><span>💌</span> 上一页</button>
+            <button class="page-btn" onclick="showPage(3)">下一页 <span>💌</span></button>
+        </div>
+    </div>
+
+    <div class="letter" id="page3">
+        <p>游戏里你玩的小青龙真的好可爱，我们第一次互相回城的样子好暧昧，当时我就喜欢上你了。那天我睡了好久，起来发现你给我表白，那是我第一次被女生表白，我真的很开心。</p>
+        <p>那天我特别在意这件事情，后来你回复我说：“真的，我其实当真了”，所以后面我一直在“勾引”你～ 那天和你表白我真的很紧张，我发现和你在一起真的好容易心动。</p>
+        <p>和你谈之前，我一直都是不爱说话的。因为我的爱好很小众，一直以来有情绪都是一个人解决，我习惯了独处，所以变得很高冷。但在你面前，我卸下了全部伪装，在你一句一句的“爱我”中，我逐渐失去了理智，变得傻傻的，不过只对你这样哦TvT。</p>
+        <div class="page-nav">
+            <button class="page-btn" onclick="showPage(2)"><span>💌</span> 上一页</button>
+            <button class="page-btn" onclick="showPage(4)">下一页 <span>💌</span></button>
+        </div>
+    </div>
+
+    <div class="letter" id="page4">
+        <p>你骗我名字那件事其实我根本不在乎，不管你是陈欣妍还是曾宇泽我都爱你。</p>
+        <p class="highlight">我真的真的真的好喜欢你，如果可以的话，我想宠你一辈子，好想和你永远在一起。我真的好贪婪，再爱我一点好不好？你不要离开我好不好？</p>
+        <div class="poem">
+            我的世界总是阴雨绵绵<br>
+            还好有你在我身边<br>
+            我不想再自己一个人了<br>
+            我爱你妍妍
+        </div>
+        <div class="signature">—— 永远爱你的赫赫</div>
+        <div class="page-nav">
+            <button class="page-btn" onclick="showPage(3)"><span>💌</span> 上一页</button>
+            <button class="page-btn" disabled>读完啦 💌</button>
+        </div>
     </div>
 
     <script>
-        const kissAudio = document.getElementById('kissAudio');
-        let isPlayed = false;
-
-        // 实时更新北京时间
-        function updateTime() {
-            const now = new Date();
-            // 补零：确保分钟/秒为两位数（如 5:02 而非 5:2）
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeStr = `${hours}:${minutes}:${seconds}`;
+        // 生成动态背景（花瓣+光斑）
+        function createBgElements() {
+            const container = document.getElementById('bgContainer');
             
-            // 高亮 5:20 相关时间
-            const timeElement = document.getElementById('currentTime');
-            if (hours === '05' && minutes === '20') {
-                timeElement.textContent = timeStr;
-                timeElement.classList.add('highlight-time');
-            } else {
-                timeElement.textContent = timeStr;
-                timeElement.classList.remove('highlight-time'); // 非 5:20 取消高亮
-            }
+            // 生成光斑
+            const light1 = document.createElement('div');
+            light1.className = 'light-spot';
+            light1.style.top = '20%';
+            light1.style.left = '30%';
+            light1.style.animationDelay = '0s';
+            container.appendChild(light1);
+            
+            const light2 = document.createElement('div');
+            light2.className = 'light-spot';
+            light2.style.top = '60%';
+            light2.style.left = '70%';
+            light2.style.animationDelay = '5s';
+            container.appendChild(light2);
+            
+            // 生成花瓣
+            setInterval(() => {
+                const petal = document.createElement('div');
+                petal.className = 'petal';
+                // 随机形状（爱心/圆形/花瓣）
+                const shapes = ['💖', '🌸', '💘', '💝', '🌼'];
+                petal.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+                // 随机属性
+                const left = Math.random() * 100;
+                const size = 12 + Math.random() * 18;
+                const delay = Math.random() * 8;
+                const color = Math.random() > 0.5 ? '#ff66b2' : '#ff85c0';
+                
+                petal.style.left = `${left}%`;
+                petal.style.fontSize = `${size}px`;
+                petal.style.color = color;
+                petal.style.animationDelay = `${delay}s`;
+                petal.style.opacity = 0.5 + Math.random() * 0.4;
+                
+                container.appendChild(petal);
+                // 移除过期花瓣
+                setTimeout(() => {
+                    petal.remove();
+                }, 12000);
+            }, 500);
         }
-
-        // 初始化并每秒更新一次时间
-        updateTime();
-        setInterval(updateTime, 1000);
-
-        function receiveKiss() {
-            document.getElementById('card').innerHTML = `
-                <h1>💖 接收成功！</h1>
-                <p>早安吻 x 1</p>
-                <p>有效期：永远</p>
-                <p>发送者：爱你的 赫赫</p>
-            `;
-
-            if (!isPlayed) {
-                kissAudio.play().catch(err => {
-                    document.getElementById('card').insertAdjacentHTML('beforeend', `<p class="sound-tip">点击页面任意位置开启声音~</p>`);
-                    document.body.onclick = () => {
-                        kissAudio.play();
-                        isPlayed = true;
-                    };
-                });
-                isPlayed = true;
-            }
-        }
-
+        
+        // 页面加载初始化
         window.onload = () => {
-            kissAudio.load();
+            createBgElements();
         };
+
+        // 点击按钮打开情书
+        document.getElementById('openBtn').addEventListener('click', function() {
+            document.getElementById('cover').style.display = 'none';
+            const firstPage = document.getElementById('page1');
+            firstPage.style.display = 'block';
+            firstPage.scrollTop = 0;
+        });
+
+        // 分页显示逻辑（切换时添加淡入效果）
+        function showPage(pageNum) {
+            // 隐藏所有页面
+            document.querySelectorAll('.letter').forEach(page => {
+                page.style.display = 'none';
+                page.style.opacity = 0;
+            });
+            // 显示目标页面并淡入
+            const targetPage = document.getElementById(`page${pageNum}`);
+            targetPage.style.display = 'block';
+            targetPage.scrollTop = 0;
+            setTimeout(() => {
+                targetPage.style.transition = 'opacity 0.8s ease';
+                targetPage.style.opacity = 1;
+            }, 10);
+        }
+
+        // 点击任意位置触发爱心效果
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('page-btn') || e.target.id === 'openBtn') return;
+            const heart = document.createElement('div');
+            heart.innerText = '💖';
+            heart.style.position = 'absolute';
+            heart.style.left = `${e.clientX}px`;
+            heart.style.top = `${e.clientY}px`;
+            heart.style.fontSize = '24px';
+            heart.style.opacity = '1';
+            heart.style.transition = 'all 1s ease-out';
+            heart.style.transform = 'translate(-50%, -50%)';
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.style.opacity = '0';
+                heart.style.transform = 'translate(-50%, -50%) translateY(-30px) scale(1.5)';
+            }, 10);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 1000);
+        });
     </script>
 </body>
 </html>
